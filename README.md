@@ -13,8 +13,8 @@ $ docker build -t fiunchinho/docker-elastalert .
 ## Running
 This container needs two environment variables when is running
 
-- ELASTICSEARCH_HOST: ElasticSearch host to query
-- ELASTICSEARCH_PORT: ElasticSearch port
+- `ELASTICSEARCH_HOST`: ElasticSearch host to query
+- `ELASTICSEARCH_PORT`: ElasticSearch port
 
 So you can start this container like
 
