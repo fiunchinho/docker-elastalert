@@ -19,7 +19,7 @@ This container needs two environment variables when is running
 So you can start this container like
 
 ```bash
-$ docker run "-e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
+$ docker run -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
 ```
 
 ## Alerting
@@ -29,12 +29,12 @@ Depending on your desired alerts you may need to mount files into the container,
 Alerts using email need to specify the path to a file which contains SMTP authentication credentials. So you need to mount this file inside the container. If the file `email_credentials.yml` is inside your current folder and your rule expect it to be in `/tmp/email_credentials.yml`
 
 ```bash
-$ docker run -v "$PWD/email_credentials.yml:/tmp/email_credentials.yml" "-e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
+$ docker run -v "$PWD/email_credentials.yml:/tmp/email_credentials.yml" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
 ```
 
 ### SNS
 For example, if we want to alert using SNS we need to mount the AWS credentials with a boto profile with permissions to publish in the SNS topic
 
 ```bash
-$ docker run -v "$HOME/.aws:/root/.aws" "-e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
+$ docker run -v "$HOME/.aws:/root/.aws" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
 ```
