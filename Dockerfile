@@ -34,5 +34,5 @@ RUN python setup.py install && \
 ENTRYPOINT ["/opt/elastalert/docker-entrypoint.sh"]
 CMD ["python", "elastalert/elastalert.py", "--verbose"]
 
-COPY ./docker-entrypoint.sh ${ELASTALERT_HOME}
+COPY ./docker-entrypoint.sh ${ELASTALERT_HOME}./docker-entrypoint.sh
 ADD ./rules/* ${RULES_DIRECTORY}/
