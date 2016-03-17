@@ -9,6 +9,14 @@ cat config.yaml | sed "s|es_host: [[:print:]]*|es_host: ${ELASTICSEARCH_HOST}|g"
 cat config.yaml.tmp > config.yaml
 rm config.yaml.tmp
 
+# Render rules files
+for file in $(find $rules_directory -name '*.yaml' -or -name '*.yml');
+do
+    cat $file | sed "s|SNS_TOPIC_ARN|${SNS_TOPIC_ARN}|g" | sed "s|AWS_REGION|${AWS_REGION}|g" | sed "s|BOTO_PROFILE|${BOTO_PROFILE}|g" > rule
+    cat rule > $file
+    rm rule
+done
+
 if ! wget ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}/elastalert_status 2>/dev/null
 then
 	echo "Creating Elastalert index in Elasticsearch..."
