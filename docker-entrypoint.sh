@@ -20,7 +20,7 @@ done
 if ! wget ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}/elastalert_status 2>/dev/null
 then
 	echo "Creating Elastalert index in Elasticsearch..."
-    elastalert-create-index --index elastalert_status --old-index "" --host ${ELASTICSEARCH_HOST} --port ${ELASTICSEARCH_PORT}
+    elastalert-create-index --index elastalert_status --old-index "" --host ${ELASTICSEARCH_HOST} --port ${ELASTICSEARCH_PORT} --aws-region ${AWS_REGION}
 else
     echo "Elastalert index already exists in Elasticsearch."
 fi
