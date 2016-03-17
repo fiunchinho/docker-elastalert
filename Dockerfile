@@ -1,4 +1,4 @@
-FROM gliderlabs/alpine
+FROM gliderlabs/alpine:edge
 
 MAINTAINER Jose Armesto <jose@armesto.net>
 
@@ -17,7 +17,7 @@ RUN apk add --update \
   && rm -rf /var/cache/apk/*
 
 # RUN wget https://github.com/Yelp/elastalert/archive/master.zip && \
-RUN wget https://github.com/fiunchinho/elastalert/archive/feature/sns_boto_profile.zip && \
+RUN wget https://github.com/fiunchinho/elastalert/archive/feature/signed_create_index_request.zip && \
     unzip -- *.zip && \
     mv -- elast* ${ELASTALERT_HOME} && \
     rm -- *.zip
