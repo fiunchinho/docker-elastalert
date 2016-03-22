@@ -27,12 +27,12 @@ WORKDIR ${ELASTALERT_HOME}
 # Install Elastalert.
 RUN python setup.py install && \
     pip install -e . && \
-    mkdir ${RULES_DIRECTORY} && \
-    cp ${ELASTALERT_HOME}/config.yaml.example config.yaml
-
+    mkdir ${RULES_DIRECTORY}
 
 ENTRYPOINT ["/opt/elastalert/docker-entrypoint.sh"]
 CMD ["python", "elastalert/elastalert.py", "--verbose"]
 
 COPY ./docker-entrypoint.sh ${ELASTALERT_HOME}/docker-entrypoint.sh
+COPY ./config.yaml ${ELASTALERT_HOME}/config.yaml
+
 ADD ./rules/* ${RULES_DIRECTORY}/
