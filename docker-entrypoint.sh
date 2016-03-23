@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 rules_directory=${RULES_FOLDER:-/opt/elastalert/rules}
 es_port=${ELASTICSEARCH_PORT:-9200}
 aws_region=${AWS_REGION:-eu-west-1}
