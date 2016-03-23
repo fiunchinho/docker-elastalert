@@ -20,7 +20,7 @@ do
     rm rule
 done
 
-if ! wget ${es_host}:${es_port}/elastalert_status 2>/dev/null
+if ! wget ${ELASTICSEARCH_HOST}:${es_port}/elastalert_status 2>/dev/null
 then
 	echo "Creating Elastalert index in Elasticsearch..."
     elastalert-create-index --index elastalert_status --old-index "" --no-auth
