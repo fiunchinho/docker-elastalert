@@ -34,9 +34,15 @@ When you deploy an EC2 instance to AWS, you assign a specific role to the instan
 - `AWS_REGION`: Region to connect
 
 ### Using a boto profile
-If you want to execute this docker container locally, you can use a boto profile to sign your requests to ElasticSearch. In that case you need to pass two extra environment variables
+If you want to execute this docker container locally, you can use a boto profile to sign your requests to ElasticSearch. To do that, you have to mount your `credentials` folder inside the container and **set the aws_region and boto_profile parameter in both the `config.yml` file and your rule file**. Then you need to pass two extra environment variables
 - `AWS_REGION`: Region to connect
 - `BOTO_PROFILE`: The profile to use, from the `~/.aws/credentials` file
+
+For example
+
+```bash
+$ docker run -v "$HOME/.aws:/root/.aws" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "AWS_REGION=eu-west-1" -e "BOTO_PROFILE=preproduction" fiunchinho/docker-elastalert
+```
 
 ## Alerting
 Depending on your desired alerts you may need to mount files into the container, like AWS credentials for SNS alerting or smtp configuration values for Email alerting.

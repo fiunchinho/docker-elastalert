@@ -34,4 +34,4 @@ CMD ["python", "elastalert/elastalert.py", "--verbose"]
 COPY ./docker-entrypoint.sh ${ELASTALERT_HOME}/docker-entrypoint.sh
 COPY ./config.yaml ${ELASTALERT_HOME}/config.yaml
 
-ADD ./rules/* ${RULES_DIRECTORY}/
+ADD ./rules ${RULES_DIRECTORY}/
