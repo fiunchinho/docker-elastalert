@@ -1,4 +1,4 @@
-FROM gliderlabs/alpine:edge
+FROM gliderlabs/alpine
 
 MAINTAINER Jose Armesto <jose@armesto.net>
 
