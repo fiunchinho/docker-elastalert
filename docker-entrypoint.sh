@@ -4,6 +4,7 @@ rules_directory=${RULES_FOLDER:-/opt/elastalert/rules}
 es_port=${ELASTICSEARCH_PORT:-9200}
 aws_region=${AWS_REGION:-''}
 use_ssl=${USE_SSL:-False}
+auth=${AUTH_METHOD:-''}
 
 # Render rules files
 for file in $(find . -name '*.yaml' -or -name '*.yml');
@@ -14,9 +15,9 @@ do
 done
 
 echo "Creating Elastalert index in Elasticsearch..."
-if [ -n "$aws_region" ] && [ -n "$BOTO_PROFILE" ] ; then
+if [[ "$auth" = "boto_profile" ]] ; then
     elastalert-create-index --index elastalert_status --old-index "" --no-auth --aws-region $aws_region --boto-profile $BOTO_PROFILE;
-elif [ -n "$aws_region" ] ; then
+elif [[ "$auth" = "instance_role" ]] ; then
     elastalert-create-index --index elastalert_status --old-index "" --no-auth --aws-region $aws_region;
 else
     elastalert-create-index --index elastalert_status --old-index "" --no-auth;
