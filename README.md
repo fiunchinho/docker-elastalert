@@ -57,8 +57,8 @@ $ docker run -v "$PWD/email_credentials.yml:/tmp/email_credentials.yml" -e "ELAS
 ```
 
 ### SNS
-For example, if we want to alert using SNS we need to mount the AWS credentials with a boto profile with permissions to publish in the SNS topic
+For example, if we want to alert using SNS we need to specify a SNS topic using the environment variable `SNS_TOPIC_ARN`, and make sure that we use a `boto_profile` or `instance_role` with permissions to publish in the SNS topic
 
 ```bash
-$ docker run -v "$HOME/.aws:/root/.aws" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "BOTO_PROFILE=production" fiunchinho/docker-elastalert
+$ docker run -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "SNS_TOPIC_ARN=arn:aws:sns:us-west-1:112233" fiunchinho/docker-elastalert
 ```
