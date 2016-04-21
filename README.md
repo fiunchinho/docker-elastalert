@@ -16,14 +16,18 @@ $ docker build -t fiunchinho/docker-elastalert .
 ## Running
 This container needs two environment variables when is running
 
-- `ELASTICSEARCH_HOST`: ElasticSearch host to query
-- `ELASTICSEARCH_PORT`: ElasticSearch port (Default: 9200)
+- `ELASTICSEARCH_HOST`: ElasticSearch host to query.
+- `ELASTICSEARCH_PORT`: ElasticSearch port (Default: 9200).
+- `AWS_REGION`: AWS Region to use.
 - `USE_SSL`: Use ssl (Default: False)
+- `SNS_TOPIC_ARN`: The ARN of the SNS topic to publish to.
+- `AUTH_METHOD`: Authentication method. Either `boto_profile` or `instance_role` 
+- `BOTO_PROFILE`: Boto profile to use to connect to AWS.
 
 So you can start this container like
 
 ```bash
-$ docker run -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
+$ docker run -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "AWS_REGION=eu-west-1" -e "AUTH_METHOD=instance_role" fiunchinho/docker-elastalert
 ```
 
 ## Running against Amazon ElasticSearch service
@@ -43,7 +47,7 @@ If you want to execute this docker container locally, you can use a boto profile
 For example
 
 ```bash
-$ docker run -v "$HOME/.aws:/root/.aws" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "AUTH_METHOD=boto_profile" "-e "AWS_REGION=eu-west-1" -e "BOTO_PROFILE=preproduction" fiunchinho/docker-elastalert
+$ docker run -v "$HOME/.aws:/root/.aws" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "AUTH_METHOD=boto_profile" -e "AWS_REGION=eu-west-1" -e "BOTO_PROFILE=preproduction" fiunchinho/docker-elastalert
 ```
 
 ## Alerting
@@ -53,12 +57,16 @@ Depending on your desired alerts you may need to mount files into the container,
 Alerts using email need to specify the path to a file which contains SMTP authentication credentials. So you need to mount this file inside the container. If the file `email_credentials.yml` is inside your current folder and your rule expect it to be in `/tmp/email_credentials.yml`
 
 ```bash
-$ docker run -v "$PWD/email_credentials.yml:/tmp/email_credentials.yml" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" fiunchinho/docker-elastalert
+$ docker run -v "$PWD/email_credentials.yml:/tmp/email_credentials.yml" -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "AWS_REGION=eu-west-1" -e "AUTH_METHOD=instance_role" fiunchinho/docker-elastalert
 ```
 
 ### SNS
 For example, if we want to alert using SNS we need to specify a SNS topic using the environment variable `SNS_TOPIC_ARN`, and make sure that we use a `boto_profile` or `instance_role` with permissions to publish in the SNS topic
 
 ```bash
-$ docker run -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "SNS_TOPIC_ARN=arn:aws:sns:us-west-1:112233" fiunchinho/docker-elastalert
+$ docker run -e "ELASTICSEARCH_HOST=some.elasticsearch.host.com" -e "ELASTICSEARCH_PORT=9200" -e "SNS_TOPIC_ARN=arn:aws:sns:us-west-1:112233" -e "AWS_REGION=eu-west-1" -e "AUTH_METHOD=instance_role" fiunchinho/docker-elastalert
 ```
+
+## FAQ
+### Container just hangs with no output. What should I do?
+This happens when the requests from ElastAlert can't be authenticated. If running locally using `boto_profile`, check that you've **set the aws_region and boto_profile parameter in both the `config.yml` file and your rule file** and the credentials file is mounted on the container. If you are using `instance_role` instead of `boto_profile`, most likely the role assigned to the server has no the right permissions to access Amazon ElasticSearch service.
