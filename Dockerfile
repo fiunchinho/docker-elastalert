@@ -1,19 +1,22 @@
-FROM gliderlabs/alpine
+FROM alpine:3.3
 
 MAINTAINER Jose Armesto <jose@armesto.net>
 
 ENV LANG C.UTF-8
 ENV ELASTALERT_HOME /opt/elastalert
 ENV RULES_DIRECTORY ${ELASTALERT_HOME}/rules
+ENV ELASTALERT_VERSION v0.1.4
 
-ARG git_sha_commit="Unknown"
-ARG built_on="Unknown"
+ARG vcs_ref="Unknown"
+ARG vcs_branch="Unknown"
+ARG build_date="Unknown"
 
-LABEL git.repository="https://github.com/fiunchinho/docker-elastalert"
-LABEL git.sha=$git_sha_commit
-LABEL build.dockerfile=/Dockerfile
-LABEL build.time=$built_on
-LABEL api.packages="apk info -vv"
+LABEL org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/fiunchinho/docker-elastalert" \
+      org.label-schema.vcs-ref=$vcs_ref \
+      org.label-schema.vcs-branch=$vcs_branch \
+      org.label-schema.docker.dockerfile=/Dockerfile \
+      org.label-schema.build-date=$build_date
 
 WORKDIR /opt
 
@@ -25,7 +28,7 @@ RUN apk add --update \
     build-base \
   && rm -rf /var/cache/apk/*
 
-RUN wget https://github.com/Yelp/elastalert/archive/master.zip && \
+RUN wget https://github.com/Yelp/elastalert/archive/${ELASTALERT_VERSION}.zip && \
     unzip -- *.zip && \
     mv -- elast* ${ELASTALERT_HOME} && \
     rm -- *.zip
