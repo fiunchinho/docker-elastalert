@@ -22,6 +22,7 @@ WORKDIR /opt
 
 RUN apk add --update \
     ca-certificates \
+    wget \
     python \
     python-dev \
     py-pip \
